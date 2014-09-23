@@ -25,9 +25,12 @@ class TestOrbit(unittest.TestCase):
         self.assertEqual(self.__orbit.alpha, 7.930047559824e44)
 
     def test_revolution_time(self):
+        self.__orbit.semiMajorAxis = 1.496e11
         self.assertLessEqual(self.__orbit.revolutionTime, 31556000)
         self.assertGreaterEqual(self.__orbit.revolutionTime, 31555000)
-
+        self.__orbit.semiMajorAxis = 1.0816e11
+        self.assertLessEqual(self.__orbit.revolutionTime, 19399000)
+        self.assertGreaterEqual(self.__orbit.revolutionTime, 19398000) 
 
 if __name__ == '__main__': 
     unittest.main()

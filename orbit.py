@@ -17,7 +17,7 @@ class Orbit():
     def get_semi_major_axis(self):
         return self.__semi_major_axis
     def set_semi_major_axis(self, a_semi_major_axis):
-        self.__semi_major_axis = a_semi_major_axis
+        self.__semiMajorAxis = a_semi_major_axis
     semiMajorAxis = property(get_semi_major_axis, set_semi_major_axis)
 
     def get_reduced_mass(self):
