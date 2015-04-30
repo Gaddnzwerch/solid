@@ -12,4 +12,6 @@ class SolarSystemFactory():
         m_solarsystem.add_planet(planet.PlanetFactory.create_mars(), 2.22799e11)
         m_solarsystem.add_planet(planet.PlanetFactory.create_jupiter(), 7.7836e11)
         m_solarsystem.add_planet(planet.PlanetFactory.create_saturn(), 14.335e11)
+        m_solarsystem.add_planet(planet.PlanetFactory.create_uranus(), 28.724e11)
+        m_solarsystem.add_planet(planet.PlanetFactory.create_neptun(), 44.95e11)
         return m_solarsystem

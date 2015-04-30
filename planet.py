@@ -38,3 +38,11 @@ class PlanetFactory:
     def create_saturn():
         return Planet(120536, 5.685e24) 
     create_saturn = staticmethod(create_saturn)
+
+    def create_neptun():
+        return Planet(49528, 1.0243e26)
+    create_neptun = staticmethod(create_neptun)
+
+    def create_uranus():
+        return Planet(51118, 8.683e25)
+    create_uranus = staticmethod(create_uranus)
