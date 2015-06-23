@@ -44,6 +44,30 @@ class Hex:
         aDirection %=  6
         return aCls.directions[aDirection]
 
+class FractionalHex():
+    #maybe subclass of Hex?
+    def __init__(self, q, r, s):
+        self.q = q
+        self.r = r
+        self.s = s
+
+    def round(self):
+        q = int(round(self.q))
+        r = int(round(self.r))
+        s = int(round(self.s))
+        q_diff = q - self.q
+        r_diff = r - self.r
+        s_diff = s - self.s
+        
+        if (q_diff > r_diff and q_diff > s_diff):
+            q = -r -s
+        elif (r_diff > s_diff):
+            r = -q -s
+        else:
+            s = -q -r
+        
+        return Hex(q, r, s)
+
 
 
 class Layout:
@@ -75,6 +99,31 @@ class Layout:
             corners.append(Point(center.x + offset.x, center.y + offset.y))
         
         return corners
+
+    """
+    intrapolate a line between two hexes
+    """
+    def lerp(self, aHexA, aHexB, aT):
+        return FractionalHex( aHexA.q + (aHexB.q - aHexA.q) * aT, aHexA.r + (aHexB.r - aHexB.r) * aT, aHexA.s + (aHexB.s - aHexA.s) * aT ) 
+
+    """
+    draw a line between two hexes by getting a list of hexes inbetween
+    """
+    def linedraw(self, aHexA, aHexB):
+        n = aHexA.distance(aHexB)
+        results = []
+        
+        if n < 1: 
+            n = 1
+
+        step = 1.0 / n
+         
+        i = 0
+        while i <= n:
+            results.append(self.lerp(aHexA,aHexB,step).round())
+            i += 1
+
+        return results
         
 
 
@@ -113,9 +162,6 @@ class Point:
     def __str__(self):
         return "(" + format(self.x) + "," + format(self.y) + ")"
 
-class FractionalHex:
-    pass
-
 class Map:
     pass
 
@@ -126,10 +172,11 @@ if __name__=="__main__":
     assert(a == b)
     print(a + b)
     print(a - b)
-    print(a * 5)
+    b = a * 5
     print(a.length())
     print(a.distance(b))
     print(a.neighbor(7))
     l = Layout(Orientation.get_layout_flat(), Point(1,1), Point(0,0))
     print(l.hex_to_pixel(a))
     print(l.polygon_corners(a))
+    print(l.linedraw(a,b))
