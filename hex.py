@@ -1,8 +1,6 @@
 # http://www.redblobgames.com/grids/hexagons/implementation.html
 from math import sqrt, pi, cos, sin, floor
 from hashlib import md5
-import map
-
 
 class Hex:
     directions = None
