@@ -1,5 +1,6 @@
 # http://www.redblobgames.com/grids/hexagons/implementation.html
 from math import sqrt, pi, cos, sin
+from hashlib import md5
 
 
 class Hex:
@@ -27,6 +28,9 @@ class Hex:
 
     def __str__(self):
         return ("(" + format(self.q) + "," + format(self.r) + "," + format(self.s) + ")")
+
+    def __hash__(self):
+        return hash((self.q, self.r)) 
 
     def length(self):
         return int((abs(self.q) + abs(self.r) + abs(self.s)) / 2)
@@ -162,10 +166,6 @@ class Point:
     def __str__(self):
         return "(" + format(self.x) + "," + format(self.y) + ")"
 
-class Map:
-    pass
-
-
 if __name__=="__main__":
     a = Hex(1,0)
     b = Hex(1,0,-1)
@@ -180,3 +180,4 @@ if __name__=="__main__":
     print(l.hex_to_pixel(a))
     print(l.polygon_corners(a))
     print(l.linedraw(a,b))
+    print(hash(a))
