@@ -1,6 +1,7 @@
 # http://www.redblobgames.com/grids/hexagons/implementation.html
-from math import sqrt, pi, cos, sin
+from math import sqrt, pi, cos, sin, floor
 from hashlib import md5
+import map
 
 
 class Hex:
@@ -158,6 +159,36 @@ class Orientation:
             aCls.layout_flat = Orientation(3.0 / 2.0, 0.0, sqrt(3.0) / 2.0, sqrt(3.0), 2.0 / 3.0, 0.0, -1.0 / 3.0, sqrt(3.0) / 3.0, 0.0)
         return aCls.layout_flat
 
+class Map:
+    def __init__(self, aWidth, aHeight):
+        self.map = self.generate_retangular_map(aWidth, aHeight)
+
+    def __str__(self):
+        mString = ""
+
+        for mHex in self.map:
+            mString += format(mHex) + ","
+
+        return mString
+
+    @staticmethod
+    def generate_retangular_map(aWidth, aHeight):
+        map = {} 
+
+        q = 0
+        while q < aWidth:
+            qOffset = floor(q/2)
+            q += 1
+
+            r = - qOffset
+            while r < aHeight - qOffset:
+                r += 1
+                newHex = Hex(q,r)
+                map[newHex] = newHex
+
+        return map
+
+
 class Point:
     def __init__(self, x, y):
         self.x = x
@@ -170,6 +201,9 @@ if __name__=="__main__":
     a = Hex(1,0)
     b = Hex(1,0,-1)
     assert(a == b)
+    m = Map(5,10)
+    print(m)
+    """
     print(a + b)
     print(a - b)
     b = a * 5
@@ -180,4 +214,4 @@ if __name__=="__main__":
     print(l.hex_to_pixel(a))
     print(l.polygon_corners(a))
     print(l.linedraw(a,b))
-    print(hash(a))
+    """
