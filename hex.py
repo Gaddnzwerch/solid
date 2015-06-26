@@ -46,30 +46,48 @@ class Hex:
         return (self - aOther).length()
 
     def neighbor(self, aDirection):
+        """Get the neighbor hex in a certain direction. 
+        
+        Keyword arguments:
+        aDirection -- Plausible values for directions are 0...5 but any integer is possible (using mod)
+
+        Return: Hex
+        """
         return self + self.direction(aDirection)
 
-    """
-    intrapolate a line between two hexes
-    """
     def lerp(self, aHexB, aT):
+        """Intrapolate a line between two hexes
+
+        Keyword arguments:
+        aHexB -- Target Hex
+        aT    -- The part of the line as float. 0.0 returns the starting hex (self) 1.0 returns the Target Hex (aHexB)
+
+        Return: FractionalHex
+        """
         return FractionalHex( self.q + (aHexB.q - self.q) * aT, self.r + (aHexB.r - self.r) * aT, self.s + (aHexB.s - self.s) * aT ) 
 
-    """
-    build a line between two hexes by getting a list of hexes inbetween
-    """
     def line(self, aHexB):
+        """Build a line between two hexes from self to aHexB
+        Keyword arguments:
+        aHexB -- Target Hex
+
+        Return: List of Hex (including start and target)
+        """
         n = self.distance(aHexB)
         results = []
+        results.append(self)
         
-        if n < 1: 
-            n = 1
-
-        step = 1.0 / n
+        try:
+            step = 1.0 / n
+        except ZeroDivisionError as e:
+            return results
          
-        i = 0
-        while i <= n:
+        i = 1
+        while i < n:
             results.append(self.lerp(aHexB,step*i).round())
             i += 1
+
+        results.append(aHexB)
 
         return results
         

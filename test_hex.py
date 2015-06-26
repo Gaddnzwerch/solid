@@ -42,6 +42,13 @@ class TestHex(unittest.TestCase):
     def test_line(self):
         line = self.hexA.line(self.hexB)
         self.assertEqual(len(line), 3)
+        line = self.hexB.line(self.hexA)
+        self.assertEqual(len(line), 3)
+        self.assertEqual(line[0], self.hexB)
+        self.assertEqual(line[2], self.hexA)
+        line = self.hexA.line(self.hexA)
+        self.assertEqual(len(line), 1)
+        self.assertEqual(line[0], self.hexA)
 
 if __name__ == '__main__':
     unittest.main()
