@@ -183,6 +183,7 @@ class Orientation:
             aCls.layout_flat = Orientation(3.0 / 2.0, 0.0, sqrt(3.0) / 2.0, sqrt(3.0), 2.0 / 3.0, 0.0, -1.0 / 3.0, sqrt(3.0) / 3.0, 0.0)
         return aCls.layout_flat
 
+#==============================================================================
 class Map:
     @staticmethod
     def generate_retangular_map(aWidth, aHeight):
@@ -212,6 +213,9 @@ class Map:
 
         return mString
 
+    def size(self):
+        return len(self.map)
+
 
 
 #==============================================================================
@@ -222,23 +226,3 @@ class Point:
 
     def __str__(self):
         return "(" + format(self.x) + "," + format(self.y) + ")"
-
-#==============================================================================
-if __name__=="__main__":
-    a = Hex(1,0)
-    b = Hex(1,0,-1)
-    assert(a == b)
-    m = Map(5,10)
-    print(m)
-    """
-    print(a + b)
-    print(a - b)
-    b = a * 5
-    print(a.length())
-    print(a.distance(b))
-    print(a.neighbor(7))
-    l = Layout(Orientation.get_layout_flat(), Point(1,1), Point(0,0))
-    print(l.hex_to_pixel(a))
-    print(l.polygon_corners(a))
-    print(l.linedraw(a,b))
-    """
