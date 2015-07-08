@@ -3,12 +3,12 @@ import terrain
 
 class TestTerrain(unittest.TestCase):
     def setUp(self):
-        self.__surfacemap = terrain.SurfaceMap(20,15)
+        self.__surfacemap = terrain.SurfaceMap(10,5)
         self.__water = terrain.Surface("Water", "blue")
         self.__earth = terrain.Surface("Earth", "brown")
 
     def test_surfacemap(self):
-        self.assertEqual(self.__surfacemap.size(), 300)
+        self.assertEqual(self.__surfacemap.size(), 50)
 
     def test_surface(self):
         self.assertEqual(self.__water.name, "Water")
@@ -23,4 +23,7 @@ class TestTerrain(unittest.TestCase):
         x.map = self.__surfacemap
         mMap = x.generateMap()
         self.assertIsInstance(mMap, terrain.SurfaceMap)
-
+        relation = 0.0
+        for percent in mMap.getSurfaceRelations().values():
+            relation += percent
+        self.assertEqual(relation, 100)

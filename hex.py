@@ -56,7 +56,7 @@ class Hex:
         return self + self.direction(aDirection)
 
     def lerp(self, aHexB, aT):
-        """Intrapolate a line between two hexes
+        """Intrapolate a line between two hexes from self to aHexB
 
         Keyword arguments:
         aHexB -- Target Hex
@@ -203,6 +203,8 @@ class Map:
         return map
 
     def __init__(self, aWidth, aHeight):
+        self.width = aWidth
+        self.height = aHeight
         self.map = self.generate_retangular_map(aWidth, aHeight)
 
     def __str__(self):
