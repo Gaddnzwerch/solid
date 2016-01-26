@@ -1,11 +1,18 @@
 import collections
+from stellarobject import *
+
 from random import randint
 
-class Planet:
+class Planet(StellarObject):
     def __init__(self, a_diameter = 1275632, a_mass = 5.974e24):
-        self.diameter = a_diameter
-        self.mass = a_mass #in kg
+        super().__init__(a_diameter, a_mass)
         self.surfaceMap = None
+
+class PlanetarySystem(StellarSystem):
+
+    @property
+    def moons(self):
+        return self.orbiting_objects
 
 class PlanetFactory:
     @staticmethod
