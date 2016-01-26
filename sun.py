@@ -1,4 +1,5 @@
 import orbit
+from random import randint
 
 class Sun():
   #default is diameter of our sun
@@ -13,3 +14,12 @@ class Sun():
   def get_mass(self):
       return self.__mass
   mass = property(get_mass)
+
+  def __str__(self):
+      return "Sun: Diameter - " + format(self.diameter) + " - Mass - " + "{:.2E}".format(self.mass)
+
+class SunFactory():
+  
+  @staticmethod
+  def create():
+      return Sun(randint(1e6,10e8), randint(1e24, 1e34))

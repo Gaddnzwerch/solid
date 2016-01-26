@@ -20,7 +20,7 @@ class SolarSystemFactory():
 
     @staticmethod
     def create():
-        m_solarsystem = solarsystem.SolarSystem(sun.Sun())
+        m_solarsystem = solarsystem.SolarSystem(sun.SunFactory.create())
         m_planet_count = randint(0,15)
 
         for i in range(0, m_planet_count): 

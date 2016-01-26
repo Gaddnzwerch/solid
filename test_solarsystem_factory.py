@@ -10,4 +10,5 @@ class TestSolarsystemFactory(unittest.TestCase):
 
     def test_create_random(self):
         solar_system_factory = solarsystemfactory.SolarSystemFactory()
-        m_solarsystem = solar_system_factory.create()
+        m_solarsystem = solar_system_factory.create() 
+        print(m_solarsystem.sun)
