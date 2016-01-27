@@ -20,9 +20,6 @@ class TestOrbit(unittest.TestCase):
     #necessary?
     def test_reduced_mass(self):
         self.assertEqual(self.__orbit.reducedMass, 5.973982057029257e24)
-    #necessary?
-    def test_alpha(self):
-        self.assertEqual(self.__orbit.alpha, 7.930047559824e44)
 
     def test_revolution_time(self):
         self.__orbit.semiMajorAxis = 1.496e11

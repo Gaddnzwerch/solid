@@ -1,9 +1,17 @@
 # http://www.redblobgames.com/grids/hexagons/implementation.html
-from math import sqrt, pi, cos, sin
+from math import sqrt, pi, cos, sin, floor
+from hashlib import md5
 
-
+#==============================================================================
 class Hex:
     directions = None
+
+    @classmethod
+    def direction(aCls, aDirection):
+        if aCls.directions == None:
+            aCls.directions = [Hex(1,0,-1), Hex(1, -1, 0), Hex(0, -1, 1), Hex(-1, 0, 1), Hex(-1, 1, 0), Hex(0, 1, -1)]
+        aDirection %=  6
+        return aCls.directions[aDirection]
 
     def __init__(self, q, r, s=None):
         if s == None:
@@ -28,6 +36,9 @@ class Hex:
     def __str__(self):
         return ("(" + format(self.q) + "," + format(self.r) + "," + format(self.s) + ")")
 
+    def __hash__(self):
+        return hash((self.q, self.r)) 
+
     def length(self):
         return int((abs(self.q) + abs(self.r) + abs(self.s)) / 2)
 
@@ -35,21 +46,62 @@ class Hex:
         return (self - aOther).length()
 
     def neighbor(self, aDirection):
+        """Get the neighbor hex in a certain direction. 
+        
+        Keyword arguments:
+        aDirection -- Plausible values for directions are 0...5 but any integer is possible (using mod)
+
+        Return: Hex
+        """
         return self + self.direction(aDirection)
 
-    @classmethod
-    def direction(aCls, aDirection):
-        if aCls.directions == None:
-            aCls.directions = [Hex(1,0,-1), Hex(1, -1, 0), Hex(0, -1, 1), Hex(-1, 0, 1), Hex(-1, 1, 0), Hex(0, 1, -1)]
-        aDirection %=  6
-        return aCls.directions[aDirection]
+    def lerp(self, aHexB, aT):
+        """Intrapolate a line between two hexes from self to aHexB
 
+        Keyword arguments:
+        aHexB -- Target Hex
+        aT    -- The part of the line as float. 0.0 returns the starting hex (self) 1.0 returns the Target Hex (aHexB)
+
+        Return: FractionalHex
+        """
+        return FractionalHex( self.q + (aHexB.q - self.q) * aT, self.r + (aHexB.r - self.r) * aT, self.s + (aHexB.s - self.s) * aT ) 
+
+    def line(self, aHexB):
+        """Build a line between two hexes from self to aHexB
+        Keyword arguments:
+        aHexB -- Target Hex
+
+        Return: List of Hex (including start and target)
+        """
+        n = self.distance(aHexB)
+        results = []
+        results.append(self)
+        
+        try:
+            step = 1.0 / n
+        except ZeroDivisionError as e:
+            return results
+         
+        i = 1
+        while i < n:
+            results.append(self.lerp(aHexB,step*i).round())
+            i += 1
+
+        results.append(aHexB)
+
+        return results
+        
+
+#==============================================================================
 class FractionalHex():
     #maybe subclass of Hex?
     def __init__(self, q, r, s):
         self.q = q
         self.r = r
         self.s = s
+
+    def __str__(self):
+        return "(" + format(self.q) + "," + format(self.r) + "," + format(self.s) + ")"
 
     def round(self):
         q = int(round(self.q))
@@ -70,6 +122,7 @@ class FractionalHex():
 
 
 
+#==============================================================================
 class Layout:
     def __init__(self, aOrientation, aSize, aOrigin):
         self.orientation = aOrientation
@@ -100,33 +153,9 @@ class Layout:
         
         return corners
 
-    """
-    intrapolate a line between two hexes
-    """
-    def lerp(self, aHexA, aHexB, aT):
-        return FractionalHex( aHexA.q + (aHexB.q - aHexA.q) * aT, aHexA.r + (aHexB.r - aHexB.r) * aT, aHexA.s + (aHexB.s - aHexA.s) * aT ) 
-
-    """
-    draw a line between two hexes by getting a list of hexes inbetween
-    """
-    def linedraw(self, aHexA, aHexB):
-        n = aHexA.distance(aHexB)
-        results = []
-        
-        if n < 1: 
-            n = 1
-
-        step = 1.0 / n
-         
-        i = 0
-        while i <= n:
-            results.append(self.lerp(aHexA,aHexB,step).round())
-            i += 1
-
-        return results
-        
 
 
+#==============================================================================
 class Orientation:
     layout_pointy = None
     layout_flat = None
@@ -154,6 +183,44 @@ class Orientation:
             aCls.layout_flat = Orientation(3.0 / 2.0, 0.0, sqrt(3.0) / 2.0, sqrt(3.0), 2.0 / 3.0, 0.0, -1.0 / 3.0, sqrt(3.0) / 3.0, 0.0)
         return aCls.layout_flat
 
+#==============================================================================
+class Map:
+    @staticmethod
+    def generate_retangular_map(aWidth, aHeight):
+        map = {} 
+
+        q = 0
+        while q < aWidth:
+            qOffset = floor(q/2)
+            q += 1
+
+            r = - qOffset
+            while r < aHeight - qOffset:
+                r += 1
+                newHex = Hex(q,r)
+                map[newHex] = newHex
+
+        return map
+
+    def __init__(self, aWidth, aHeight):
+        self.width = aWidth
+        self.height = aHeight
+        self.map = self.generate_retangular_map(aWidth, aHeight)
+
+    def __str__(self):
+        mString = ""
+
+        for mHex in self.map:
+            mString += format(mHex) + ","
+
+        return mString
+
+    def size(self):
+        return len(self.map)
+
+
+
+#==============================================================================
 class Point:
     def __init__(self, x, y):
         self.x = x
@@ -161,22 +228,3 @@ class Point:
 
     def __str__(self):
         return "(" + format(self.x) + "," + format(self.y) + ")"
-
-class Map:
-    pass
-
-
-if __name__=="__main__":
-    a = Hex(1,0)
-    b = Hex(1,0,-1)
-    assert(a == b)
-    print(a + b)
-    print(a - b)
-    b = a * 5
-    print(a.length())
-    print(a.distance(b))
-    print(a.neighbor(7))
-    l = Layout(Orientation.get_layout_flat(), Point(1,1), Point(0,0))
-    print(l.hex_to_pixel(a))
-    print(l.polygon_corners(a))
-    print(l.linedraw(a,b))
