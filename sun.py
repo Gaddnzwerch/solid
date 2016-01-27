@@ -9,7 +9,7 @@ class Sun(StellarObject):
     super().__init__(a_diameter, a_mass)
 
   def __str__(self):
-      return "Sun: Diameter - " + format(self.diameter) + " - Mass - " + "{:.2E}".format(self.mass)
+      return "Sun: " + super().__str__()
 
 class SunFactory():
   
