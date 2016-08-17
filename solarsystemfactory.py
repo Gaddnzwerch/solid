@@ -42,7 +42,7 @@ class PlanetarySystemFactory():
 
         for j in range(0, m_moon_count):
             m_orbit = randint(m_planet.diameter * 2 ,m_planet.diameter * 100)
-            m_moon = moon.Moon(randint(800, 40000), m_orbit)
+            m_moon = moon.Moon(randint(3, 40000), m_orbit)
             m_planetarysystem.add_orbiting_object(m_moon, randint(5.79e3, 44.95e5))
 
         return m_planetarysystem
