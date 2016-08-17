@@ -55,46 +55,50 @@ class Hex:
         """
         return self + self.direction(aDirection)
 
-    def lerp(self, aHexB, aT):
-        """Intrapolate a line between two hexes from self to aHexB
+    def interpolateLinear(self, aTargetHex, aIntersection):
+        """Intrapolate a line between two hexes from self to aTargetHex
 
         Keyword arguments:
-        aHexB -- Target Hex
-        aT    -- The part of the line as float. 0.0 returns the starting hex (self) 1.0 returns the Target Hex (aHexB)
+        aTargetHex       -- Target Hex
+        aIntersection    -- The part of the line as float. 0.0 returns the starting hex (self) 1.0 returns the Target Hex (aTargetHex)
 
         Return: FractionalHex
         """
-        return FractionalHex( self.q + (aHexB.q - self.q) * aT, self.r + (aHexB.r - self.r) * aT, self.s + (aHexB.s - self.s) * aT ) 
+        mInterpolatedQ = self.q + (aTargetHex.q - self.q) * aIntersection
+        mInterpolatedR = self.r + (aTargetHex.r - self.r) * aIntersection
+        mInterpolatedS = self.s + (aTargetHex.s - self.s) * aIntersection
+        return FractionalHex( mInterpolatedQ, mInterpolatedR, mInterpolatedS ) 
 
-    def line(self, aHexB):
-        """Build a line between two hexes from self to aHexB
+    def line(self, aTargetHex):
+        """Build a line between two hexes from self to aTargetHex
         Keyword arguments:
-        aHexB -- Target Hex
+        aTargetHex -- Target Hex
 
         Return: List of Hex (including start and target)
         """
-        n = self.distance(aHexB)
+        distanceStartTarget = self.distance(aTargetHex)
         results = []
         results.append(self)
         
         try:
-            step = 1.0 / n
+            fragmentation = 1.0 / distanceStartTarget
         except ZeroDivisionError as e:
             return results
          
-        i = 1
-        while i < n:
-            results.append(self.lerp(aHexB,step*i).round())
-            i += 1
+        hexNo = 1
+        while hexNo < distanceStartTarget:
+            fragment = fragmentation * hexNo
+            fragmentHex = self.interpolateLinear(aTargetHex, fragment).round()
+            results.append(fragmentHex)
+            hexNo += 1
 
-        results.append(aHexB)
+        results.append(aTargetHex)
 
         return results
         
 
 #==============================================================================
 class FractionalHex():
-    #maybe subclass of Hex?
     def __init__(self, q, r, s):
         self.q = q
         self.r = r
@@ -185,6 +189,7 @@ class Orientation:
 
 #==============================================================================
 class Map:
+    """This class represents a map of hexes"""
     @staticmethod
     def generate_retangular_map(aWidth, aHeight):
         map = {} 
@@ -222,6 +227,7 @@ class Map:
 
 #==============================================================================
 class Point:
+    """Helper class that represents a point with two coordinates"""
     def __init__(self, x, y):
         self.x = x
         self.y = y

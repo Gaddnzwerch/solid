@@ -34,10 +34,10 @@ class TestHex(unittest.TestCase):
         hexShould = hex.Hex(2,0)
         self.assertEqual(hexNeighbor, hexShould)
 
-    def test_hex_lerp(self):
-        self.assertEqual((self.hexA.lerp(self.hexB, 0).round()),self.hexA)
-        self.assertEqual((self.hexA.lerp(self.hexB, 0.5).round()), hex.Hex(2,0))
-        self.assertEqual((self.hexA.lerp(self.hexB, 1).round()),self.hexB)
+    def test_hex_interpolateLinear(self):
+        self.assertEqual((self.hexA.interpolateLinear(self.hexB, 0).round()),self.hexA)
+        self.assertEqual((self.hexA.interpolateLinear(self.hexB, 0.5).round()), hex.Hex(2,0))
+        self.assertEqual((self.hexA.interpolateLinear(self.hexB, 1).round()),self.hexB)
 
     def test_line(self):
         line = self.hexA.line(self.hexB)
@@ -49,6 +49,21 @@ class TestHex(unittest.TestCase):
         line = self.hexA.line(self.hexA)
         self.assertEqual(len(line), 1)
         self.assertEqual(line[0], self.hexA)
+
+    def test_map(self):
+        testmap = hex.Map(10,10)
+        self.assertEqual(testmap.size(), 100)
+        pointyOrientation = hex.Orientation.get_layout_pointy()
+        originPoint = hex.Point(250,250)
+        sizeInPixel = hex.Point(10,10)
+        layout = hex.Layout(pointyOrientation, sizeInPixel, originPoint)
+
+        for hexfield in testmap.map:
+            print(hexfield)
+
+            for corner in layout.polygon_corners(hexfield):
+                print(corner)
+
 
 if __name__ == '__main__':
     unittest.main()
