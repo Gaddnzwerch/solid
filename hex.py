@@ -1,6 +1,7 @@
 # http://www.redblobgames.com/grids/hexagons/implementation.html
-from math import sqrt, pi, cos, sin, floor
+from math import   floor
 from hashlib import md5
+from primitives import Point 
 
 #==============================================================================
 class Hex:
@@ -71,6 +72,7 @@ class Hex:
 
     def line(self, aTargetHex):
         """Build a line between two hexes from self to aTargetHex
+
         Keyword arguments:
         aTargetHex -- Target Hex
 
@@ -96,7 +98,6 @@ class Hex:
 
         return results
         
-
 #==============================================================================
 class FractionalHex():
     def __init__(self, q, r, s):
@@ -123,69 +124,6 @@ class FractionalHex():
             s = -q -r
         
         return Hex(q, r, s)
-
-
-
-#==============================================================================
-class Layout:
-    def __init__(self, aOrientation, aSize, aOrigin):
-        self.orientation = aOrientation
-        self.size = aSize
-        self.origin = aOrigin
-
-    def hex_to_pixel(self, aHex):
-        x = (self.orientation.f0 * aHex.q + self.orientation.f1 * aHex.r) * self.size.x
-        y = (self.orientation.f2 * aHex.q + self.orientation.f3 * aHex.r) * self.size.y
-        return Point(x + self.origin.x, y + self.origin.y)
-
-    def pixel_to_hex(self, aPoint):
-        point = Point((aPoint.x - self.origin.x) / self.size.x, (aPoint.y - self.origin.y) / self.size.y)
-        q = self.layout.b0 * point.x + self.layout.b1 * point.y
-        r = self.layout.b2 * point.x + self.layout.b3 * point.y
-        return FractionalHex(q, r)
-
-    def hex_corner_offset(self, aCorner):
-        angle = 2.0 * pi * (aCorner + self.orientation.startAngle) / 6
-        return Point(self.size.x * cos(angle), self.size.y * sin(angle))
-
-    def polygon_corners(self, aHex):
-        corners = []
-        center = self.hex_to_pixel(aHex)
-        for i in range(0,6):
-            offset = self.hex_corner_offset(i)
-            corners.append(Point(center.x + offset.x, center.y + offset.y))
-        
-        return corners
-
-
-
-#==============================================================================
-class Orientation:
-    layout_pointy = None
-    layout_flat = None
-
-    def __init__(self, f0, f1, f2, f3, b0, b1, b2, b3, startAngle):
-        self.f0 = f0
-        self.f1 = f1
-        self.f2 = f2
-        self.f3 = f3
-        self.b0 = b0
-        self.b1 = b1
-        self.b2 = b2
-        self.b3 = b3
-        self.startAngle = startAngle
-
-    @classmethod
-    def get_layout_pointy(aCls):
-        if aCls.layout_pointy == None:
-            aCls.layout_pointy = Orientation(sqrt(3.0), sqrt(3.0) / 2.0, 0.0, 3.0 / 2.0, sqrt(3.0) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0, 0.5)
-        return aCls.layout_pointy
-
-    @classmethod
-    def get_layout_flat(aCls):
-        if aCls.layout_flat == None:
-            aCls.layout_flat = Orientation(3.0 / 2.0, 0.0, sqrt(3.0) / 2.0, sqrt(3.0), 2.0 / 3.0, 0.0, -1.0 / 3.0, sqrt(3.0) / 3.0, 0.0)
-        return aCls.layout_flat
 
 #==============================================================================
 class Map:
@@ -225,12 +163,3 @@ class Map:
 
 
 
-#==============================================================================
-class Point:
-    """Helper class that represents a point with two coordinates"""
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def __str__(self):
-        return "(" + format(self.x) + "," + format(self.y) + ")"

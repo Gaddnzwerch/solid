@@ -1,5 +1,6 @@
 import unittest
 import hex
+from view.graphical_representation import IGraphicalRepresentation
 
 class TestHex(unittest.TestCase): 
     def setUp(self):
@@ -53,16 +54,6 @@ class TestHex(unittest.TestCase):
     def test_map(self):
         testmap = hex.Map(10,10)
         self.assertEqual(testmap.size(), 100)
-        pointyOrientation = hex.Orientation.get_layout_pointy()
-        originPoint = hex.Point(250,250)
-        sizeInPixel = hex.Point(10,10)
-        layout = hex.Layout(pointyOrientation, sizeInPixel, originPoint)
-
-        for hexfield in testmap.map:
-            print(hexfield)
-
-            for corner in layout.polygon_corners(hexfield):
-                print(corner)
 
 
 if __name__ == '__main__':
