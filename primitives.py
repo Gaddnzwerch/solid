@@ -15,3 +15,6 @@ class Line():
     def __init__(self, aStart, aEnd):
         self.start = aStart
         self.end = aEnd
+
+    def __str__(self):
+        return "Line: " + format(self.start) + " - " + format(self.end)

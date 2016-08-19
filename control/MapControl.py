@@ -1,5 +1,6 @@
-from view.graphical_representation import SvgRepresentation
+from view.graphical_representation import *
 from hex import Map
+from primitives import * 
 from math import sqrt, pi, cos, sin
 
 
@@ -8,7 +9,7 @@ class MapControl():
     def __init__(self, aMap):
         self.map = aMap
         self.layout = None
-        self.orientation = None
+        self.orientation = Orientation.get_layout_pointy()
         self.start = None
         self.sizeInPixel = None
 
@@ -16,12 +17,19 @@ class MapControl():
         if self.layout == None:
             self.layout = Layout(self.orientation, self.sizeInPixel, self.start)
 
-        lines = [] 
+        primitives = self.convertMapToSetOfPrimitives()
         representation = SvgRepresentation()
+        representation.addPrimitives(primitives)
+        return representation
 
-    def convertHexToSetOfPrimitives(self, aHex):
-        lines = aHex.polygon_outlines(aHex)
+    def convertMapToSetOfPrimitives(self):
+        primitives = []
+        
+        for lHex in self.map.map:
+            lHexOutlines = self.layout.polygon_corners(lHex)
+            primitives.append(lHexOutlines)
 
+        return primitives 
 
 #==============================================================================
 class Layout:
@@ -72,13 +80,9 @@ class Layout:
                 startPoint = endPoint
                 endPoint = None
         
+        assert(endPoint != None)
         line = Line(firstPoint, startPoint)
         outlines.add(line)
-
-            
-            
-
-
 
 #==============================================================================
 class Orientation:
