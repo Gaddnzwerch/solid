@@ -7,7 +7,7 @@ class StellarObject():
         self.mass = a_mass #in t
 
     def __str__(self):
-        return "Mass: " + "{:.2E}".format(self.mass) + " t, Diameter: " + format(self.diameter) + " km"
+        return _('Mass: %s t, Diameter: %s km') % ("{:.2E}".format(self.mass), format(self.diameter))
 
 class StellarSystem():
 

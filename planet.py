@@ -7,6 +7,8 @@ class Planet(StellarObject):
     def __init__(self, a_diameter = 1275632, a_mass = 5.974e24):
         super().__init__(a_diameter, a_mass)
         self.surfaceMap = None
+    def __str__(self):
+        return _("Planet") + ": " + super().__str__()
 
 class PlanetarySystem(StellarSystem):
 
