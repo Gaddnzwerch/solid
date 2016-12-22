@@ -16,5 +16,3 @@ class TestMapControl(unittest.TestCase):
         lGraphicalRepresentation = self.mapControl.getGraphicalRepresentation()
         self.assertNotEqual(lGraphicalRepresentation, None)
 
-
-

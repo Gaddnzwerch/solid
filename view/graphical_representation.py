@@ -19,7 +19,9 @@ class SvgRepresentation(IGraphicalRepresentation):
         self.end = "</svg>"
 
     def display(self):
-        pass
+        print(self.start)
+        print(self.representation)
+        print(self.end)
 
     def addPrimitives(self, aListOfPrimitives):
 
