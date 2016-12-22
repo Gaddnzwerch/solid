@@ -1,5 +1,6 @@
 import unittest
 import terrain
+import control.surface_map_factory
 
 class TestTerrain(unittest.TestCase):
     def setUp(self):
@@ -15,7 +16,7 @@ class TestTerrain(unittest.TestCase):
         self.assertEqual(self.__earth.name, "Earth")
 
     def test_surfacemapfactory(self):
-        x = terrain.SurfaceMapFactory()
+        x = control.surface_map_factory.SurfaceMapFactory()
         x.addSurfacePercent(self.__water, 75)
         self.assertRaises(ValueError, x.addSurfacePercent, self.__earth, 100)
         x.addSurfacePercent(self.__earth, x.getFreeSurfacePercent())

@@ -2,7 +2,6 @@ import orbit
 from stellarobject import StellarSystem
 
 class SolarSystem(StellarSystem):
-
     @property
     def sun(self):
         return self.center
