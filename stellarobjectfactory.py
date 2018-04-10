@@ -11,12 +11,21 @@ class StellarSystemFactory():
 		# create center
 		l_center = SunFactory.create()
 		l_stellar_system = StellarSystem(l_center)
+		logging.info(_("Created") + " " + repr(l_stellar_system))
+		logging.debug(_("Minimum Distance: %s Maximum Distance: %s") % (format(l_stellar_system.minimum_distance), format(l_stellar_system.maximum_distance)))
 		
 		# adding planets
 		for i in range(randint(0,15)):
-			l_stellar_system.add_orbiting_object(PlanetFactory.create(), i)
-		
-		logging.debug(_("Created") + " " + repr(l_stellar_system))
+			# get distance in AU  stay in int-range 		
+			if l_stellar_system.minimum_distance >= l_stellar_system.maximum_distance:
+				logging.debug(_("Minimum distance >= maximum distance"))
+				break 
+			else:
+				logging.debug(_("Minimum Distance: %s Maximum Distance: %s") % (format(l_stellar_system.minimum_distance), format(l_stellar_system.maximum_distance)))
+				l_distance = randint(int(l_stellar_system.minimum_distance), int(l_stellar_system.maximum_distance))
+				l_distance *= l_center.diameter 			
+				l_stellar_system.add_orbiting_object(PlanetFactory.create(), l_distance)
+
 		logging.debug(str(l_stellar_system))		
 		return l_stellar_system
 

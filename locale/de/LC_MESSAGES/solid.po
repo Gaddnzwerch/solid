@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: solid\n"
-"POT-Creation-Date: 2018-04-10 14:05+0200\n"
-"PO-Revision-Date: 2018-04-10 14:07+0200\n"
+"POT-Creation-Date: 2018-04-10 14:30+0200\n"
+"PO-Revision-Date: 2018-04-10 14:30+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -18,6 +18,11 @@ msgstr ""
 #: moon.py:9
 msgid "Moon"
 msgstr "Mond"
+
+#: orbit.py:26
+#, python-format
+msgid "%s is orbiting around %s in %s"
+msgstr "%s kreist um %s in %s"
 
 #: planet.py:9
 msgid "Planet"
@@ -42,11 +47,6 @@ msgstr "Sein Zentrum ist %s."
 msgid "There are %s planets revolving around the center:"
 msgstr "%s Planeten kreisen um das Zentrum:"
 
-#: stellarobject.py:36
-#, python-format
-msgid " - %s in a distance of %s"
-msgstr "- %s in einer Entfernung von %s"
-
 #: stellarobjectfactory.py:19
 msgid "Created"
 msgstr "Erschuf"
@@ -58,3 +58,6 @@ msgstr "Sonne"
 #: test/test_translation.py:7 test/test_translation.py:11
 msgid "Hello World!"
 msgstr "Hallo Welt!"
+
+#~ msgid " - %s in a distance of %s"
+#~ msgstr "- %s in einer Entfernung von %s"
