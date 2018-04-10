@@ -1,26 +1,57 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: solid\n"
-"POT-Creation-Date: 2016-12-22 17:37+0100\n"
-"PO-Revision-Date: 2016-12-22 17:37+0100\n"
+"POT-Creation-Date: 2018-04-10 14:05+0200\n"
+"PO-Revision-Date: 2018-04-10 14:07+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0.5\n"
 "X-Poedit-Basepath: ../../..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: moon.py:9
+msgid "Moon"
+msgstr "Mond"
+
+#: planet.py:9
+msgid "Planet"
+msgstr "Planet"
 
 #: stellarobject.py:10
 #, python-format
 msgid "Mass: %s t, Diameter: %s km"
 msgstr "Masse: %s t, Durchmesser: %s km"
 
-#: sun.py:12
+#: stellarobject.py:29
+msgid "This is a stellar system"
+msgstr "Das ist ein Sonnensystem"
+
+#: stellarobject.py:31
+#, python-format
+msgid "It's center is %s."
+msgstr "Sein Zentrum ist %s."
+
+#: stellarobject.py:33
+#, python-format
+msgid "There are %s planets revolving around the center:"
+msgstr "%s Planeten kreisen um das Zentrum:"
+
+#: stellarobject.py:36
+#, python-format
+msgid " - %s in a distance of %s"
+msgstr "- %s in einer Entfernung von %s"
+
+#: stellarobjectfactory.py:19
+msgid "Created"
+msgstr "Erschuf"
+
+#: sun.py:11
 msgid "Sun"
 msgstr "Sonne"
 
